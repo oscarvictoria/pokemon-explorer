@@ -1,3 +1,58 @@
+let pokemonContainer = document.querySelector('#pokemon-container');
+console.log(pokemonContainer); 
+
+const starterPokemon = {
+  id: 25,
+  name: "pikachu",
+  sprites: {
+    front_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+  }
+};
+
+function renderPokemon(pokemon) {
+  let card = document.createElement('div'); 
+  let name = document.createElement('h2'); 
+  name.textContent = pokemon.name; 
+
+  card.appendChild(name); 
+
+  let image = document.createElement('img'); 
+  image.src = pokemon.sprites.front_default; 
+  image.alt = pokemon.name; 
+
+  card.appendChild(image);
+
+
+
+
+  pokemonContainer.appendChild(card); 
+}
+
+// renderPokemon(starterPokemon);
+
+async function fetchPokemon(id) {
+  try {
+   let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+
+   if(!response.ok) {
+    throw new Error('Unable to fetch pokemon')
+   }
+
+
+   let data = await response.json()
+   renderPokemon(data); 
+
+
+  } catch(err) {
+    console.log(err)
+  }
+
+
+}
+
+fetchPokemon(22);
+
+
 async function getPokemon() {
   try {
     let response = await fetch("https://pokeapi.co/api/v2/pokemon/pikachu");
@@ -14,7 +69,7 @@ async function getPokemon() {
   }
 }
 
-// getPokemon();
+
 
 function getPokemonWithPromises() {
   fetch("https://pokeapi.co/api/v2/pokemon/charmander")
@@ -35,7 +90,7 @@ function getPokemonWithPromises() {
     });
 }
 
-// getPokemonWithPromises();
+
 
 const pokemonNames = ["bulbasaur", "fakepokemon", "squirtle"];
 
@@ -68,4 +123,4 @@ async function getStartedPokemon() {
   }
 }
 
-getStartedPokemon();
+
