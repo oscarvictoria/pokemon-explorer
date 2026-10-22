@@ -1,5 +1,8 @@
 let pokemonContainer = document.querySelector('#pokemon-container');
-console.log(pokemonContainer); 
+
+let search = document.querySelector('#pokemon-search'); 
+let searchButton = document.querySelector('#search-btn'); 
+
 
 const starterPokemon = {
   id: 25,
@@ -72,6 +75,13 @@ async function displayMultiplePokemon(ids) {
 }
 
 displayMultiplePokemon([1, 4, 7, 25])
+
+searchButton.addEventListener('click', function(e) {
+  e.preventDefault()
+
+  let inputValue = search.value; 
+  fetchPokemon(inputValue); 
+})
 
 async function getPokemon() {
   try {
