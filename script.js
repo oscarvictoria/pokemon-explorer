@@ -52,6 +52,26 @@ async function fetchPokemon(id) {
 
 fetchPokemon(22);
 
+async function displayMultiplePokemon(ids) {
+  try {
+    for(let id of ids) {
+      let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+     if(!response.ok) {
+    throw new Error('Unable to fetch pokemon')
+   }
+
+
+   let data = await response.json()
+   renderPokemon(data); 
+    }
+
+  } catch(err) {
+    console.log(err)
+  }
+
+}
+
+displayMultiplePokemon([1, 4, 7, 25])
 
 async function getPokemon() {
   try {
