@@ -1,87 +1,93 @@
-let pokemonContainer = document.querySelector('#pokemon-container');
+let pokemonContainer = document.querySelector("#pokemon-container");
 
-let search = document.querySelector('#pokemon-search'); 
-let searchButton = document.querySelector('#search-btn'); 
-
+let search = document.querySelector("#pokemon-search");
+let searchButton = document.querySelector("#search-btn");
 
 const starterPokemon = {
   id: 25,
   name: "pikachu",
   sprites: {
-    front_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-  }
+    front_default:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+  },
 };
 
 function renderPokemon(pokemon) {
-  let card = document.createElement('div'); 
-  let name = document.createElement('h2'); 
-  name.textContent = pokemon.name; 
+  let card = document.createElement("div");
+  let name = document.createElement("h2");
+  name.textContent = pokemon.name;
 
-  card.appendChild(name); 
+  card.appendChild(name);
 
-  let image = document.createElement('img'); 
-  image.src = pokemon.sprites.front_default; 
-  image.alt = pokemon.name; 
+  let image = document.createElement("img");
+  image.src = pokemon.sprites.front_default;
+  image.alt = pokemon.name;
 
   card.appendChild(image);
 
+  let description = document.createElement("p");
+  let types = pokemon.types
+    .map(function (element) {
+      return element.type.name;
+    })
+    .join(", ");
+  description.textContent = types;
 
+  card.appendChild(description);
 
+  let abilitiesDescription = document.createElement("p");
+  let abilities = pokemon.abilities
+    .map(function (item) {
+      return item.ability.name;
+    })
+    .join(", ");
 
-  pokemonContainer.appendChild(card); 
+  abilitiesDescription.textContent = "Abilities: " + abilities;
+
+  card.appendChild(abilitiesDescription);
+
+  pokemonContainer.appendChild(card);
 }
-
-// renderPokemon(starterPokemon);
 
 async function fetchPokemon(id) {
+  pokemonContainer.textContent = "";
   try {
-   let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+    let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
 
-   if(!response.ok) {
-    throw new Error('Unable to fetch pokemon')
-   }
+    if (!response.ok) {
+      pokemonContainer.textContent = "Pokemon not found!";
+      throw new Error("Unable to fetch pokemon");
+    }
 
-
-   let data = await response.json()
-   renderPokemon(data); 
-
-
-  } catch(err) {
-    console.log(err)
+    let data = await response.json();
+    renderPokemon(data);
+  } catch (err) {
+    console.log(err);
   }
-
-
 }
-
-fetchPokemon(22);
 
 async function displayMultiplePokemon(ids) {
   try {
-    for(let id of ids) {
-      let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-     if(!response.ok) {
-    throw new Error('Unable to fetch pokemon')
-   }
+    for (let id of ids) {
+      let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      if (!response.ok) {
+        throw new Error("Unable to fetch pokemon");
+      }
 
-
-   let data = await response.json()
-   renderPokemon(data); 
+      let data = await response.json();
+      renderPokemon(data);
     }
-
-  } catch(err) {
-    console.log(err)
+  } catch (err) {
+    console.log(err);
   }
-
 }
 
-displayMultiplePokemon([1, 4, 7, 25])
+searchButton.addEventListener("click", function (e) {
+  e.preventDefault();
 
-searchButton.addEventListener('click', function(e) {
-  e.preventDefault()
-
-  let inputValue = search.value; 
-  fetchPokemon(inputValue); 
-})
+  let inputValue = search.value;
+  fetchPokemon(inputValue);
+});
 
 async function getPokemon() {
   try {
@@ -98,8 +104,6 @@ async function getPokemon() {
     console.log(err);
   }
 }
-
-
 
 function getPokemonWithPromises() {
   fetch("https://pokeapi.co/api/v2/pokemon/charmander")
@@ -119,8 +123,6 @@ function getPokemonWithPromises() {
       console.log(err);
     });
 }
-
-
 
 const pokemonNames = ["bulbasaur", "fakepokemon", "squirtle"];
 
@@ -152,5 +154,3 @@ async function getStartedPokemon() {
     console.log(err);
   }
 }
-
-
