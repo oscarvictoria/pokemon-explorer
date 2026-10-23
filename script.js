@@ -3,6 +3,17 @@ let pokemonContainer = document.querySelector("#pokemon-container");
 let search = document.querySelector("#pokemon-search");
 let searchButton = document.querySelector("#search-btn");
 
+let loadMoreBtn = document.querySelector("#load-more-btn");
+
+let nextPokemonId = 1;
+
+let batchSize = 12;
+
+loadMoreBtn.addEventListener("click", function () {
+  pokemonContainer.textContent = "";
+  loadMorePokemon();
+});
+
 const starterPokemon = {
   id: 25,
   name: "pikachu",
@@ -14,6 +25,7 @@ const starterPokemon = {
 
 function renderPokemon(pokemon) {
   let card = document.createElement("div");
+  card.classList.add("pokemon-card");
   let name = document.createElement("h2");
   name.textContent = pokemon.name;
 
@@ -50,7 +62,6 @@ function renderPokemon(pokemon) {
 }
 
 async function fetchPokemon(id) {
-  pokemonContainer.textContent = "";
   try {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
 
@@ -63,6 +74,13 @@ async function fetchPokemon(id) {
     renderPokemon(data);
   } catch (err) {
     console.log(err);
+  }
+}
+
+async function loadMorePokemon() {
+  for (let i = 0; i < batchSize; i++) {
+    await fetchPokemon(nextPokemonId);
+    nextPokemonId++;
   }
 }
 
@@ -154,3 +172,5 @@ async function getStartedPokemon() {
     console.log(err);
   }
 }
+
+loadMorePokemon();
