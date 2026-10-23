@@ -104,6 +104,7 @@ searchButton.addEventListener("click", function (e) {
   e.preventDefault();
 
   let inputValue = search.value;
+  pokemonContainer.textContent = "";
   fetchPokemon(inputValue);
 });
 
